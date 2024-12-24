@@ -8,30 +8,56 @@
 </head>
 <body>
     <div class="container">
-
         <div class="row">
-            <div class="col-6 mx-auto mt-5">        
-                <h1>Test array javascript</h1>
-                <select name="mi_selec" id="mi_selet" class="m-5" onchange="select_click()"></select>
+            <div class="col-6 mx-auto">   
+                <h1>Test array javascript</h1>     
+                
             </div>
         </div>
         <div class="row">
+            <div class="col-6 mx-auto">
+                <select name="mi_selec" id="mi_selet" class="m-5" onchange="select_click()"></select>
+            </div>
+            <div class="col-6 mx-auto mt-5">
+                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" id="Search" name="Search" onkeyup="search_on_array()">
+            </div>
+        </div>
+        <div class="row MT-5">
             <div class="col-2">Resultado 1:</div><div id="result" class="col-2"></div>
             <div class="col-2">Resultado 2:</div><div id="result2" class="col-2"></div>
         </div>
+        <div class="row mt-5">
+            <table class="tabla" id="tabla">
+                <thead>
+                    <tr>
+                        <th>Frutas</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr></tr>
+                    
+                </tbody>
+            </table>
     </div>
     <script>
-        mi_array = ["Manzanas", "Peras", "Melocotones", "uvas", "pasas"];
+        mi_array = ["Manzanas", "Peras", "Melocotones", "Uvas", "Pasas"];
         window.onload = function () {
             cargar_array(mi_array);
         }
         function cargar_array(mi_array) {
             var select = document.getElementById("mi_selet");
+            table = document.getElementById("tabla");
             for (var i = 0; i < mi_array.length; i++) {
                 var option = document.createElement("option");
                 option.value = mi_array[i];
                 option.text = mi_array[i];
                 select.add(option);
+            }
+            //Rellenamos la tabla con los elementos del array
+            for (var i = 0; i < mi_array.length; i++) {
+                var row = table.insertRow();
+                var cell = row.insertCell();
+                cell.innerHTML = mi_array[i];
             }
         }
         function select_click() {
@@ -46,6 +72,33 @@
             const valorSeleccionado = select.value;
             div_result2.innerHTML = valorSeleccionado;
         }
+        function search_on_array() {
+            var search = document.getElementById("Search");
+            //Ponemos la primera letra en mayúsucula y el resto en minúscula
+            search_formateado = capitalizarPrimeraLetra(search.value);
+            table = document.getElementById("tabla");
+            //Creamos un array con los elementos del select
+            var select = document.getElementById("mi_selet");
+            var options = select.options;
+            var options_array = [];
+            for (var i = 0; i < options.length; i++) {
+                options_array.push(options[i].value);
+            }
+            //Limpiamos la tabla y comprobamos si coincide con el texto del input para añadirlo
+            table.innerHTML = "";
+            for (var i = 0; i < options_array.length; i++) {
+                if (options_array[i].includes(search_formateado)) {
+                    var row = table.insertRow();
+                    var cell = row.insertCell();
+                    cell.innerHTML = options_array[i];
+                }
+            }
+
+        }
+        function capitalizarPrimeraLetra(palabra) {
+            return palabra.charAt(0).toUpperCase() + palabra.slice(1).toLowerCase();
+        }
+          
     </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
